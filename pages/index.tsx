@@ -1,12 +1,14 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import { useEffect } from "react";
-import { themeChange } from "theme-change";
+import { MouseEventHandler } from "react";
+import { useTheme } from "next-themes";
 
 const Home: NextPage = () => {
-  useEffect(() => {
-    themeChange(false);
-  }, []);
+  const { theme, setTheme } = useTheme();
+
+  const themeChange: MouseEventHandler<HTMLInputElement> = (e) => {
+    theme === "business" ? setTheme("cmyk") : setTheme("business");
+  };
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center py-2 prose-headings:font-sans relative">
@@ -24,9 +26,8 @@ const Home: NextPage = () => {
               </span>
               <input
                 type="checkbox"
+                onClick={themeChange}
                 className="toggle toggle-lg"
-                data-toggle-theme="business,cmyk"
-                data-act-class="ACTIVECLASS"
               />
             </label>
           </div>
