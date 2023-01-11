@@ -1,7 +1,8 @@
 import { useFormik } from "formik";
 import { signupSchema } from "../utils/validation";
-import { sign } from "crypto";
 import Link from "next/link";
+import { signIn } from "next-auth/react";
+import client from "../lib/prisma";
 
 const Signup = () => {
   const formik = useFormik({
@@ -12,6 +13,7 @@ const Signup = () => {
       confirm_password: "",
     },
     validationSchema: signupSchema,
+    validateOnChange: false,
     onSubmit: (values) => {
       console.log(values);
     },
@@ -19,46 +21,76 @@ const Signup = () => {
 
   return (
     <div className="bg-base-200 min-h-screen flex justify-center items-center">
-      <main className="w-1/2 min-h-max flex items-center">
+      <main className="w-3/4 min-h-max flex items-center">
         <form
           onSubmit={formik.handleSubmit}
-          className="rounded-lg shadow w-1/2 form-control flex flex-col bg-base-100 overflow-hidden gap-4 p-4"
+          className="rounded-lg shadow w-full md:w-1/2 form-control flex flex-col bg-base-100 overflow-hidden gap-4 p-4"
         >
+          <legend className="text-center md:hidden text-xl font-semibold">
+            Register
+          </legend>
           <div className="w-full">
             <input
               type="text"
               className="input input-md w-full font-serif bg-base-200"
+              name="name"
               placeholder="Full Name"
               onBlur={formik.handleBlur}
+              onChange={formik.handleChange}
               value={formik.values.name}
             />
+            {formik.touched.name && formik.errors.name ? (
+              <span className="label-text-alt text-error">
+                {formik.errors.name}
+              </span>
+            ) : null}
           </div>
           <div>
             <input
               type="email"
               className="input input-md w-full font-serif bg-base-200"
+              name="email"
               placeholder="Email"
               onBlur={formik.handleBlur}
               value={formik.values.email}
+              onChange={formik.handleChange}
             />
+            {formik.touched.email && formik.errors.email ? (
+              <span className="label-text-alt text-error">
+                {formik.errors.email}
+              </span>
+            ) : null}
           </div>
           <div>
             <input
               type="password"
               className="input input-md w-full font-serif bg-base-200"
+              name="password"
               placeholder="Password"
               onBlur={formik.handleBlur}
               value={formik.values.password}
+              onChange={formik.handleChange}
             />
+            {formik.touched.email && formik.errors.email ? (
+              <span className="label-text-alt text-error">
+                {formik.errors.email}
+              </span>
+            ) : null}
           </div>
           <div>
             <input
               type="password"
               className="input input-md w-full font-serif bg-base-200"
               placeholder="Confirm Password"
+              name="confirm_password"
               onBlur={formik.handleBlur}
               value={formik.values.confirm_password}
             />
+            {formik.touched.email && formik.errors.email ? (
+              <span className="label-text-alt text-error">
+                {formik.errors.email}
+              </span>
+            ) : null}
           </div>
           <div className="mt-4">
             <button className="btn btn-block btn-primary" type="submit">
@@ -95,13 +127,13 @@ const Signup = () => {
             </button>
             <p className="text-center pt-4">
               Already Have an Account?{" "}
-              <Link href="/auth" className="link link-hover link-secondary">
+              <Link href="/login" className="link link-hover link-secondary">
                 Login
               </Link>
             </p>
           </div>
         </form>
-        <section className="w-1/2 flex justify-center items-center">
+        <section className="w-1/2 justify-center items-center hidden md:flex">
           <h1 className="text-5xl">Register</h1>
         </section>
       </main>

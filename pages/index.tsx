@@ -1,56 +1,44 @@
 import type { NextPage } from "next";
-import Head from "next/head";
-import { MouseEventHandler } from "react";
-import { useTheme } from "next-themes";
+import { useFormik } from "formik";
+import { urlSchema } from "../utils/validation";
 
 const Home: NextPage = () => {
-  const { theme, setTheme } = useTheme();
-
-  const themeChange: MouseEventHandler<HTMLInputElement> = (e) => {
-    theme === "business" ? setTheme("cmyk") : setTheme("business");
-  };
+  const formik = useFormik({
+    initialValues: {
+      url: "",
+    },
+    validationSchema: urlSchema,
+    validateOnChange: false,
+    onSubmit: (values) => {
+      console.log(values);
+    },
+  });
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center py-2 prose-headings:font-sans relative">
-      <Head>
-        <title>Next Url Shortener</title>
-        <link rel="icon" href="/favicon.png" />
-      </Head>
-
-      <main className="flex flex-col gap-4 ">
-        <nav className="absolute top-0 inset-x-0 flex justify-end items-center p-4">
-          <div className="form-control">
-            <label className="label cursor-pointer gap-2">
-              <span className="label-text text-md font-semibold font-serif">
-                Toggle Dark Mode
-              </span>
-              <input
-                type="checkbox"
-                onClick={themeChange}
-                className="toggle toggle-lg"
-              />
-            </label>
-          </div>
-        </nav>
-        <h1 className="font-bold text-7xl">Url Shortener</h1>
-        <form className="form-control gap-4 group hover:cursor-pointer">
-          <label
-            htmlFor="client_url"
-            className="font-serif group-hover:cursor-pointer label label-text"
-          >
-            Enter Your Url Here
-          </label>
-          <input
-            type="url"
-            id="client_url"
-            className="input input-bordered font-serif text-lg group-hover:cursor-pointer"
-          />
-          <button className="btn btn-primary btn-block font-serif">
-            Submit
-          </button>
-        </form>
-      </main>
-    </div>
+    <main className="flex flex-col gap-4 p-2">
+      <h1 className="font-bold text-7xl text-center">Url Shortener</h1>
+      <form
+        className="form-control gap-4 group hover:cursor-pointer"
+        onSubmit={formik.handleSubmit}
+      >
+        <label
+          htmlFor="client_url"
+          className="font-serif group-hover:cursor-pointer label label-text"
+        >
+          Enter Your Url Here
+        </label>
+        <input
+          type="url"
+          id="client_url"
+          className="input input-bordered font-serif text-lg group-hover:cursor-pointer"
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+        />
+        <button className="btn btn-primary btn-block font-serif">
+          Shorten
+        </button>
+      </form>
+    </main>
   );
 };
 
