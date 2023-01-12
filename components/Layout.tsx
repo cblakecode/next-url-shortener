@@ -9,7 +9,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
         <title>Next Url Shortener</title>
         <link rel="icon" href="/favicon.png" />
         <meta name="description" content="url shortener" />
-        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+        <meta httpEquiv="Content-Type" content="text/html;charset=UTF-8" />
       </Head>
 
       <Navbar />
