@@ -13,7 +13,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
       </Head>
 
       <Navbar />
-      <main>{children}</main>
+      <main className="flex justify-center items-center">{children}</main>
     </div>
   );
 };

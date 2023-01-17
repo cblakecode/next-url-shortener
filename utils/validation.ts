@@ -25,9 +25,10 @@ export const signupSchema = Yup.object({
 
 export const urlSchema = Yup.object({
   url: Yup.string()
-    .matches(
-      /((https?):\/\/)?(www.)?[a-z0-9]+(\.[a-z]{2,}){1,3}(#?\/?[a-zA-Z0-9#]+)*\/?(\?[a-zA-z0-9-_]+=[a-zA-Z0-9-%]+&?)?$/,
-      "Enter Valid Url"
-    )
+    .url("Enter Valid Url")
+    // .matches(
+    //   /((https?):\/\/)?(www.)?[a-z0-9]+(\.[a-z]{2,}){1,3}(#?\/?[a-zA-Z0-9#]+)*\/?(\?[a-zA-z0-9-_]+=[a-zA-Z0-9-%]+&?)?$/,
+    //   "Enter Valid Url"
+    // )
     .required("Please enter a url"),
 });
