@@ -4,7 +4,7 @@ import { trpc } from "../utils/trpc";
 import UrlInput from "./UrlInput";
 
 const UrlForm = ({ id, user }: { id: string; user: any }) => {
-  const mutation = trpc.shortenUrl.useMutation({
+  const mutation = trpc.crud.create.useMutation({
     onSettled: () => {
       console.log("settled");
       user.refetch();
