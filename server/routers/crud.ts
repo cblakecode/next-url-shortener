@@ -32,10 +32,14 @@ const crudRouter = router({
     )
     .mutation(async ({ ctx, input }) => {
       try {
+        console.log(__filename);
+
         const original = new URL(input.url);
         const short = `${original.protocol}//${original.hostname}/${nanoid(
           10
         )}`;
+        console.log("here");
+
         return await ctx.client.url.create({
           data: {
             original: input.url,

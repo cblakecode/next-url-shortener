@@ -1,10 +1,41 @@
 import type { NextPage } from "next";
 import { trpc } from "../utils/trpc";
 import UrlForm from "../components/UrlForm";
+import { createRef, useRef } from "react";
+import { procedureTypes } from "@trpc/server";
 
 const Home: NextPage = () => {
   const user = trpc.crud.readWithUrls.useQuery();
   const deleteUrl = trpc.crud.delete.useMutation();
+
+  const refs = useRef<HTMLTableCellElement[]>([]);
+
+  const getRedirectUrl = (url: string): string => {
+    if (process.env.VERCEL_URL) {
+      return `${process.env.VERCEL_URL}/api/redirect/${url}`;
+    }
+    return `http://localhost:3000/api/redirect/${url}`;
+  };
+
+  const handleCopy = (index: number) => {
+    console.log(refs);
+
+    const type = "text/html";
+    const blob = new Blob([refs.current[index].innerHTML!], { type });
+    const data = [new ClipboardItem({ [type]: blob })];
+
+    navigator.permissions
+      .query({ name: "persistent-storage" })
+      .then((result) => {
+        if (result.state === "granted" || result.state === "prompt") {
+          return navigator.clipboard.write(data).then(
+            () => console.log("Coppied!", data[0], refs.current[index]),
+            () => console.log("could not copy!")
+          );
+        }
+        console.log("Not Permitted!");
+      });
+  };
 
   return (
     <main className="grid grid-flow-dense place-content-center">
@@ -49,7 +80,16 @@ const Home: NextPage = () => {
                 <tr className="table-row" key={index}>
                   <th>{index + 1}</th>
                   <td className="table-cell text-center">{url.original}</td>
-                  <td className="table-cell text-center">{url.short}</td>
+                  <td
+                    className="table-cell text-center"
+                    ref={(ref) =>
+                      refs.current.indexOf(ref!) === -1
+                        ? refs?.current?.push(ref!)
+                        : null
+                    }
+                  >
+                    <a href={getRedirectUrl(url.short)}>{url.short}</a>
+                  </td>
                   <td className="table-cell text-center">{url.clicks}</td>
                   <th>
                     <div className="flex justify-center items-center w-full h-full gap-1">
@@ -80,7 +120,10 @@ const Home: NextPage = () => {
                         </button>
                       </div>
                       <div className="tooltip tooltip-bottom" data-tip="copy">
-                        <button className="btn btn-square btn-sm">
+                        <button
+                          className="btn btn-square btn-sm"
+                          onClick={() => handleCopy(index)}
+                        >
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"

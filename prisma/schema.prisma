@@ -65,7 +65,7 @@ model VerificationToken {
 
   model Url {
     id String @id @default(cuid())
-    short String
+    short String @unique
     original String @unique
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt

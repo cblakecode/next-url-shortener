@@ -5,10 +5,13 @@ import client from "./lib/prisma";
 
 export async function createContext(opts: trpcNext.CreateNextContextOptions) {
   const session = await getSession({ req: opts.req });
-
+  const res = opts.res;
+  const req = opts.req;
   return {
     session,
     client,
+    res,
+    req,
   };
 }
 
