@@ -13,7 +13,6 @@ const redirect: NextApiHandler = async (req, res) => {
   try {
     if (!url) throw new Error();
 
-    await urlSchema.validate(url);
     const response = await client.url.findFirst({
       where: {
         short: url as string,

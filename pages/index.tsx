@@ -12,9 +12,11 @@ const Home: NextPage = () => {
 
   const getRedirectUrl = (url: string): string => {
     if (process.env.VERCEL_URL) {
-      return `${process.env.VERCEL_URL}/api/redirect/${url}`;
+      return `${process.env.VERCEL_URL}/api/redirect/${encodeURIComponent(
+        url
+      )}`;
     }
-    return `http://localhost:3000/api/redirect/${url}`;
+    return `http://localhost:3000/api/redirect/${encodeURIComponent(url)}`;
   };
 
   const handleCopy = (index: number) => {
