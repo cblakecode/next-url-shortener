@@ -8,6 +8,7 @@ import "react-loading-skeleton/dist/skeleton.css";
 const Home: NextPage = () => {
   const user = trpc.crud.readWithUrls.useQuery();
   const deleteUrl = trpc.crud.delete.useMutation();
+  const deleteAll = trpc.crud.deleteAll.useMutation();
 
   const refs = useRef<HTMLTableCellElement[]>([]);
 
@@ -59,7 +60,15 @@ const Home: NextPage = () => {
                 <th>Clicks</th>
                 <th className="flex items-center justify-center">
                   <div className="tooltip tooltip-bottom" data-tip="delete all">
-                    <button className="btn btn-square btn-sm btn-error">
+                    <button
+                      className="btn btn-square btn-sm btn-error"
+                      onClick={() => {
+                        deleteAll.mutate(
+                          { userId: user.data?.id! },
+                          { onSuccess: () => user.refetch() }
+                        );
+                      }}
+                    >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"

@@ -81,7 +81,9 @@ const crudRouter = router({
         return await ctx.client.url.deleteMany({
           where: { userId: { contains: input.userId } },
         });
-      } catch (error) {}
+      } catch (error) {
+        console.error(error);
+      }
     }),
 });
 
