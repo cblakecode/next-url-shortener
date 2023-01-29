@@ -1,11 +1,5 @@
 import { NextApiHandler } from "next";
-import * as y from "yup";
-import { urlSchema } from "../../../utils/validation";
 import client from "../../../server/lib/prisma";
-
-const schema = y.object({
-  url: y.string().url().required(),
-});
 
 const redirect: NextApiHandler = async (req, res) => {
   const { url } = req.query;
@@ -13,11 +7,13 @@ const redirect: NextApiHandler = async (req, res) => {
   try {
     if (!url) throw new Error();
 
-    const response = await client.url.findFirst({
+    const response = await client.url.update({
       where: {
         short: url as string,
       },
+      data: { clicks: { increment: 1 } },
     });
+
     res.redirect(307, response?.original!);
   } catch (error) {
     console.error(error);
