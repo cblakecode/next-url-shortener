@@ -5,7 +5,7 @@ declare global {
 }
 
 const client = globalThis.prisma || new PrismaClient();
-if (process.env.NODE_ENV !== "production") globalThis.prisma = client;
+if (process.env.VERCEL_ENV !== "production") globalThis.prisma = client;
 
 // export const connectDB = async () => {
 //   try {
