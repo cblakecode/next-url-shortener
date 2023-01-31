@@ -1,6 +1,8 @@
 const Alert = (props: any) => {
   return (
-    <div className={`alert alert-${props.info} shadow-lg`}>
+    <div
+      className={`alert alert-${props.info} shadow-lg absolute bottom-4 left-4 max-w-max`}
+    >
       <div>
         <svg
           xmlns="http://www.w3.org/2000/svg"
